@@ -24,22 +24,22 @@ C++とDxLibを使用して、ゲームループから各システム基盤まで
 個人制作
 
 ## 見てほしいコード
-- Main.cpp
+- **Main.cpp**
   `Project1/Main.cpp`<br>
 プロジェクトの根幹部分
-- SceneManager.cpp
+- **SceneManager.cpp**
   `Project1/SceneManager.cpp`<br>
 シーン進行管理、統括
-- OriginalClass.h
+- **OriginalClass.h**
   `Project1/OriginalClass.h`<br>
 UnityのList型やVector2型などを実装している
-- InputSystem.h
+- **InputSystem.h**
   `Project1/InputSystem.h`<br>
 マウスとキーボードの入力を管理
-- GameDirecter.cpp
+- **GameDirecter.cpp**
   `Project1/GameDirecter.cpp`<br>
 メインゲーム進行管理
-- Bord.cpp
+- **Bord.cpp**
   `Project1/Bord.cpp`<br>
 盤面管理
 
