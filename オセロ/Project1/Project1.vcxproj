@@ -160,9 +160,7 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="OriginalClass.h" />
     <ClInclude Include="PlayerController.h" />
-    <ClInclude Include="ProjConf.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Sub.h" />
     <ClInclude Include="TitleDirecter.h" />
     <ClInclude Include="WindowData.h" />
   </ItemGroup>

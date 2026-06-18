@@ -28,12 +28,14 @@ void Board::Initialize() {
 	resultFlag = false;
 	time = 0;
 
+	// 各マスの初期化
 	int mWidth = width / 8;
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++)
 		{
 			Vector2 mPos = Vector2(pos.x + (mWidth * x), pos.y + (mWidth * y));
 			masu[y][x].Initialize(mPos, mWidth, Empty);
+			// 中心位置 4マス
 			if ((x == 3 && y == 3) || (x == 4 && y == 4)) masu[y][x].SetComa(White);
 			if ((x == 4 && y == 3) || (x == 3 && y == 4)) masu[y][x].SetComa(Black);
 		}
@@ -50,7 +52,9 @@ int Board::Process(int Player) {
 			return -1; // プレイヤーの表示をやめる
 		}
 	}
+
 	if (putFlag || endFlag) return Player;
+
 	time++;
 	if (time > 60) {
 		// パスを表示した後、ターンを変える
@@ -79,6 +83,7 @@ void Board::Disp() {
 		DrawString(900, 650, text.c_str(), Color::Black());
 		return;
 	}
+
 	// 盤面を表示
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++)
@@ -86,6 +91,7 @@ void Board::Disp() {
 			masu[y][x].Disp();
 		}
 	}
+
 	// 駒数を表示
 	SetFontSize(45);
 	std::string text = "黒：" + std::to_string(blComa);
@@ -98,7 +104,9 @@ void Board::Disp() {
 		DrawString(570, 360, "終了", Color::Red());
 		return;
 	}
+
 	if (putFlag) return; // おける場所があるなら戻る
+
 	SetFontSize(150);
 	DrawString(600, 360, "パス", Color::Red());
 }
@@ -107,9 +115,10 @@ bool PutCheck(Box masu[][8], int x, int y, int player, int enemy);
 /*** 設置可能マスの確認 ***/
 void Board::Check(int Player) {
 	int enemy = Player == Black ? White : Black;
-	bool _putFlag = putFlag;
+	bool _putFlag = putFlag; // 前手番の置けたかを記録
 	putFlag = false;
 
+	// 設置可能マスに置けることを伝える
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++)
 		{
@@ -118,6 +127,7 @@ void Board::Check(int Player) {
 			putFlag |= flag;
 		}
 	}
+
 	// 両者がおけなければ ゲームを終了する
 	if (!_putFlag && !putFlag) { endFlag = true; time = 0; }
 	Count();
@@ -129,18 +139,21 @@ void Board::Check(int Player) {
 /*** 相手の駒を挟める場所の検索 → 設置可能マスの検索 ***/
 bool PutCheck(Box masu[][8], int x, int y, int player, int enemy) {
 	if (masu[y][x].GetComa() != Empty) return false; // すでに駒が置かれているなら
+
 	int cx[8] = { 1,1,0,-1,-1,-1,0,1 };
 	int cy[8] = { 0,1,1,1,0,-1,-1,-1 };
 	bool flag = false;
+
 	// 周り八マスを検索
 	for (int i = 0; i < 8; i++) {
 		int count = 0;
 		int xx = x;
 		int yy = y;
+
 		do {
 			// その先を検索
-			xx += cx[i];
-			yy += cy[i];
+			xx += cx[i]; // x方向に
+			yy += cy[i]; // y方向に
 			if (xx < 0 || yy < 0 || xx >= 8 || yy >= 8) break; // 盤外なら
 			if (masu[yy][xx].GetComa() != enemy) break; // 相手の駒じゃなければ
 			// 相手の駒なら検索を続ける
@@ -162,6 +175,7 @@ int Reversi(Box masu[][8], int x, int y, int xx, int yy, int player, int enemy);
 /*** 駒の設置 ***/
 int Board::Put(int Player, Vector2 cPos) {
 	if (!putFlag || endFlag) return Player; // おける場所がなければ戻る
+
 	int player = Player;
 	bool flag = false;
 
@@ -169,17 +183,20 @@ int Board::Put(int Player, Vector2 cPos) {
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++)
 		{
+			// クリックした地点に置けるか確認
 			flag = masu[y][x].Collition(cPos);
-			if (flag) {
-				SetPut(masu, x, y, player);
-				break;
-			}
+			if (!flag) continue;
+
+			// クリックした地点に置く
+			SetPut(masu, x, y, player);
+			break;
 		}
 		if (flag) break;
 	}
 
 	// 当たっていなければターンを変えない
 	if (!flag) return player;
+
 	// 当たっていればターンを変える
 	player = player == Black ? White : Black;
 	Check(player);
@@ -203,17 +220,20 @@ void SetPut(Box masu[][8], int x, int y, int player) {
 /*** 間にある駒をひっくり返す ***/
 int Reversi(Box masu[][8], int x, int y, int xx, int yy, int player, int enemy) {
 	if (x < 0 || y < 0 || x >= 8 || y >= 8) return enemy; // 盤外なら
+
 	// 駒が相手なら次のマスへ
 	if (masu[y][x].GetComa() == enemy) {
 		int coma = Reversi(masu, x + xx, y + yy, xx, yy, player, enemy);
 		masu[y][x].SetComa(coma);
 		return coma;
 	}
+
 	// 駒が自分ならひっくり返して戻る
 	if (masu[y][x].GetComa() == player) {
 		masu[y][x].SetComa(player);
 		return player;
 	}
+
 	// 空白マスならひっくり返さず戻る
 	return enemy;
 }
@@ -222,8 +242,9 @@ int Reversi(Box masu[][8], int x, int y, int xx, int yy, int player, int enemy) 
 void Board::Count() {
 	blComa = 0;
 	whComa = 0;
-	int count[3] = { 0,0,0 };
+	int count[3] = { 0,0,0 }; // { 空白, 黒, 白 }
 
+	// 数える
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
 			int i = masu[y][x].GetComa();
@@ -231,6 +252,7 @@ void Board::Count() {
 		}
 	}
 
+	// コマ数を格納
 	blComa = count[Black];
 	whComa = count[White];
 

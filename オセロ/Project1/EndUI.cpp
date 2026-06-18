@@ -18,18 +18,15 @@ void EndUI::Initialize() {
 	height = 420;
 	pos = Vector2(350, 170);
 	backColor = Color::Lightgreen();
+
 	yesBtn.Initialize(240, 100, 40, Vector2(pos.x+70, pos.y+260), Vector2(120,30), Color::Yellow(), "はい");
 	noBtn.Initialize(240, 100, 40, Vector2(pos.x+540, pos.y+260), Vector2(120,30), Color::Yellow(), "いいえ");
-}
-
-/*** ゲーム内処理 ***/
-void EndUI::Process() {
-
 }
 
 /*** 描画 ***/
 void EndUI::Disp() {
 	if (!stateFlag) return;
+
 	DrawBox(pos.x, pos.y, pos.x + width, pos.y + height, backColor, TRUE);
 	Text::DispText("ゲームを終了して\nデスクトップに戻りますか？", Vector2(pos.x + (width / 2), pos.y + 100), Text::Center);
 	yesBtn.Disp();
@@ -39,6 +36,7 @@ void EndUI::Disp() {
 /*** クリック時の処理 ***/
 void EndUI::OnClick(Vector2 MousePos, int* flag) {
 	if (!stateFlag) return;
+
 	if (yesBtn.OnCollition(MousePos)) YesBtnProcess(flag);
 	if (noBtn.OnCollition(MousePos)) NoBtnProcess();
 }
@@ -48,14 +46,9 @@ void EndUI::ChangeState() {
 	stateFlag = !stateFlag;
 }
 
-/*** フラグ取得 ***/
-bool EndUI::CheckState() {
-	return stateFlag;
-}
-
 /*** ボタンクリック時の処理 ***/
 void EndUI::YesBtnProcess(int* flag) {
-	*flag = 0;
+	*flag = 0; // ゲームを終了する
 	stateFlag = false;
 }
 void EndUI::NoBtnProcess() {

@@ -2,6 +2,10 @@
 #include <iostream>
 #include "WindowData.h"
 
+/// <summary>
+/// “®“I”z—ñ
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template<typename T> // ‚Ç‚ñ‚ÈŒ^‚É‚à‘Î‰ž‚Å‚«‚é–œ”\Œ^
 class List
 {

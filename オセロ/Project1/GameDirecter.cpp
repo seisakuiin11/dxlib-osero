@@ -18,16 +18,19 @@ void GameDirecter::Initialize() {
 /*** ゲーム内処理 ***/
 int GameDirecter::Process(int* flag) {
 	int scene = 1;
+
 	// ボード 処理
 	int _turn = board.Process(player.GetTurn());
 	player.SetTurn(_turn);
+
 	// プレイヤー 処理
 	Vector2 vec = player.Process();
-	if (vec.x != -1 && vec.y != -1) {
+	if (vec.x != -1 && vec.y != -1) { // クリック操作があった場合
 		int turn = board.Put(player.GetTurn(), vec);
 		player.SetTurn(turn);
 	}
 
+	// タイトルシーンに戻る
 	if (GetKey()->GetInputKeyUp(KEY_INPUT_ESCAPE)) scene = 0;
 	if (GetKey()->GetInputKeyUp(KEY_INPUT_SPACE) && board.GetEndFlag()) scene = 0;
 

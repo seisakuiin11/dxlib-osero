@@ -19,16 +19,15 @@ void Box::Initialize(Vector2 Pos, int Width, int Coma) {
 	coma = Coma;
 }
 
-/*** ゲーム内処理 ***/
-void Box::Process() {
-
-}
-
 /*** 描画 ***/
 void Box::Disp() {
+	// 塗りつぶし
 	DrawBox(pos.x, pos.y, pos.x + width, pos.y + width, Color::Green(), TRUE);
 	if(isPut) DrawBox(pos.x, pos.y, pos.x + width, pos.y + width, Color::Yellow(), TRUE); //置けるマスをハイライト
+	// アウトライン
 	DrawBox(pos.x, pos.y, pos.x + width, pos.y + width, Color::Black(), FALSE);
+
+	// 空白なら
 	if (coma == Empty) return;
 
 	// 駒の描画
@@ -52,9 +51,12 @@ void Box::SetIsPut(bool Flag) {
 	isPut = Flag;
 }
 
+/*** クリック位置との当たり判定 ***/
 bool Box::Collition(Vector2 cPos) {
 	if (!isPut) return false;
+
 	if (cPos.x < pos.x || cPos.x > pos.x + width) return false;
 	if (cPos.y < pos.y || cPos.y > pos.y + width) return false;
+
 	return true;
 }

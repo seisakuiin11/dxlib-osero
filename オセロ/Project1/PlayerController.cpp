@@ -32,10 +32,12 @@ void Player::Disp() {
 	Text::DispText(turn == 1 ? "プレイヤー：黒" : "プレイヤー：白", Vector2(1130, 125), Text::Left, 45);
 }
 
+/*** 現在のプレイヤー(1Por2P)を返す ***/
 int Player::GetTurn() {
 	return turn;
 }
 
+/*** 現在のプレイヤーを設定 (手番の変更) ***/
 void Player::SetTurn(int Turn) {
 	turn = Turn;
 }

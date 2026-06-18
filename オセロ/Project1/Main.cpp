@@ -3,6 +3,13 @@
 #include "Main.h"
 #include "InputSystem.h"
 
+Fps fps;
+SceneManager Scene;
+
+void Initialize();	// 初期化
+int Process();		// ゲーム内処理
+void Disp();		// 描画
+
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
 	ChangeWindowMode(TRUE);							// ウィンドウモードで起動
@@ -43,6 +50,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	return 0;						// ソフトの終了 
 }
+
+// =====================================================================================================
 
 /*** 初期化 ***/
 void Initialize() {

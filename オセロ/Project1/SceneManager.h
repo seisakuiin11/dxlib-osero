@@ -13,6 +13,9 @@ enum SceneState
 	MAXSCENE
 };
 
+/// <summary>
+/// シーン管理クラス
+/// </summary>
 class SceneManager
 {
 public:

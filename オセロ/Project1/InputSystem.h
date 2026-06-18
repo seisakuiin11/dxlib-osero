@@ -33,6 +33,10 @@ public:
 	/// </summary>
 	bool GetInputKeyUp(int KeyType);
 };
+/// <summary>
+/// キーボードの入力情報を取得する
+/// </summary>
+/// <returns></returns>
 KeyBoard* GetKey();
 
 /// <summary>
@@ -78,4 +82,8 @@ public:
 	/// </summary>
 	Vector2 GetMouseAxis();
 };
+/// <summary>
+/// マウスの入力情報を取得する
+/// </summary>
+/// <returns></returns>
 Mouse *GetMouse();
